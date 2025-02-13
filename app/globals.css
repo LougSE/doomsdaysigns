@@ -3,19 +3,68 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #FFD700;
+  --secondary: #FF4500;
+  --space-bg: #090A0F;
+  --space-light: #1B2735;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    @apply bg-[var(--space-bg)];
+  }
+
+  body {
+    @apply text-white overflow-x-hidden;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Space Background Effects */
+.space-background {
+  background: radial-gradient(ellipse at bottom, var(--space-light) 0%, var(--space-bg) 100%);
+  background-attachment: fixed;
+}
+
+.star-field {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 50%;
+  filter: blur(1px);
+  transition: transform 0.3s ease-out;
+}
+
+.star::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 100px;
+  background: linear-gradient(var(--primary), transparent);
+  transform-origin: top;
+  transform: translateX(-50%) scaleY(0);
+  transition: transform 0.2s ease-out;
+}
+
+.star.scrolling-down::after {
+  transform: translateX(-50%) scaleY(1);
+  transform-origin: top;
+}
+
+.star.scrolling-up::after {
+  transform: translateX(-50%) scaleY(-1);
+  transform-origin: bottom;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-all duration-300;
 }
